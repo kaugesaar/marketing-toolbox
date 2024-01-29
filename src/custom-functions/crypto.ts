@@ -1,6 +1,4 @@
-import { parseInput } from ".";
-
-type StringInput = string | string[][];
+import { StringInput, parseInput } from ".";
 
 /**
  * Returns the MD2 hash of the given string.

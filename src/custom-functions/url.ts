@@ -1,6 +1,4 @@
-import { parseInput } from ".";
-
-type StringInput = string | string[][];
+import { StringInput, parseInput } from ".";
 
 /**
  * Extracts URL parameters into a key-value object.
