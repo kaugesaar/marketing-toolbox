@@ -46,8 +46,7 @@ export const EXTRACT_PARAMS = (
 };
 
 /**
- * Extracts the UTM parameters from a URL. It can be used to extract a single
- * UTM parameter or multiple UTM parameters. By default, it will extract utm_source,
+ * Extracts the UTM parameters from a URL. By default, it will extract utm_source,
  * utm_medium, utm_campaign, utm_content, and utm_term. In that order.
  *
  * @param {A2:A26} url - The URL to extract the UTM parameters from
