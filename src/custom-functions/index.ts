@@ -2,6 +2,10 @@
  * StringInput can be either a string or a 2D array of strings (rows/cols).
  */
 export type StringInput = string | string[][];
+/**
+ * StringOutput can be either a string or a array of strings (rows/cols).
+ */
+export type StringOutput = string | string[][];
 
 /**
  * Parses the input and return the hash. If the input is a range,
@@ -9,7 +13,7 @@ export type StringInput = string | string[][];
  */
 export const parseInput = (
   input: StringInput,
-  callback: (input: string) => string
+  callback: (input: string) => StringOutput | void
 ) => {
   return Array.isArray(input)
     ? input.map(row => row.map(cell => callback(cell)))

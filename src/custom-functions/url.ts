@@ -1,5 +1,24 @@
+import { parseInput } from ".";
+
 type StringInput = string | string[][];
-type StringOutput = string[] | string[][] | StringOutput[] | StringOutput[][];
+
+/**
+ * Extracts URL parameters into a key-value object.
+ */
+const extractUrlParams = (
+  url: string,
+  decode_uri: boolean
+): { [key: string]: string } => {
+  const matches = url.match(/[^?&]+=[^&]+/g) || [];
+  return matches.reduce(
+    (acc, param) => {
+      const [key, value] = param.split("=");
+      acc[key] = decode_uri ? decodeURIComponent(value) : value;
+      return acc;
+    },
+    {} as { [key: string]: string }
+  );
+};
 
 /**
  * Extracts the parameters from a URL. By default, it will extract all parameters.
@@ -15,35 +34,17 @@ export const EXTRACT_PARAMS = (
   url: StringInput,
   params?: string[][],
   decode_uri: boolean = true
-): StringOutput => {
-  if (Array.isArray(url)) {
-    const rows: string[] = [];
-    url.forEach(row =>
-      row.forEach(cell =>
-        rows.push(...(EXTRACT_PARAMS(cell, params, decode_uri) as string[]))
-      )
+) => {
+  const rows: string[][] = [];
+  parseInput(url, cell => {
+    const extracedParams = extractUrlParams(cell, decode_uri);
+    rows.push(
+      params
+        ? [...params[0].map(key => extracedParams[key] || "")]
+        : [...Object.keys(extracedParams).map(key => extracedParams[key])]
     );
-    return rows;
-  }
-
-  const matches = url.match(/[^?&]+=[^&]+/g);
-
-  if (!matches) {
-    return [[]];
-  }
-
-  const link: { [key: string]: string } = {};
-
-  matches.forEach(param => {
-    const [key, value] = param.split("=");
-    link[key] = decode_uri ? decodeURIComponent(value) : value;
   });
-
-  const output = params
-    ? [...params[0].map(key => link[key] || "")]
-    : [...Object.keys(link).map(key => link[key])];
-
-  return [output];
+  return rows;
 };
 
 /**
@@ -63,46 +64,24 @@ export const EXTRACT_UTM = (
   url: StringInput,
   utms?: string[][],
   decode_uri: boolean = true
-): StringOutput => {
-  if (Array.isArray(url)) {
-    const rows: string[] = [];
-    url.forEach(row =>
-      row.forEach(cell =>
-        rows.push(...(EXTRACT_UTM(cell, utms, decode_uri) as string[]))
-      )
+) => {
+  const rows: string[][] = [];
+  parseInput(url, cell => {
+    const link = extractUrlParams(cell, decode_uri);
+    const assureUtm = (key: string) =>
+      key.startsWith("utm_") ? key : `utm_${key}`;
+
+    rows.push(
+      utms
+        ? [...utms[0].map(key => link[assureUtm(key)] || "")]
+        : [
+            link["utm_source"],
+            link["utm_medium"],
+            link["utm_campaign"],
+            link["utm_content"],
+            link["utm_term"],
+          ]
     );
-    return rows;
-  }
-
-  const matches = url.match(/utm_[^&]+/g);
-
-  if (!matches) {
-    return [[]];
-  }
-
-  const link: { [key: string]: string } = {};
-
-  matches.forEach(utm => {
-    const [key, value] = utm.split("=");
-    link[key] = decode_uri ? decodeURIComponent(value) : value;
   });
-
-  const assureUtm = (key: string) => {
-    if (!key.startsWith("utm_")) {
-      return `utm_${key}`;
-    }
-    return key;
-  };
-
-  const output = utms
-    ? [...utms[0].map(key => link[assureUtm(key)] || "")]
-    : [
-        link["utm_source"],
-        link["utm_medium"],
-        link["utm_campaign"],
-        link["utm_content"],
-        link["utm_term"],
-      ];
-
-  return [output];
+  return rows;
 };
