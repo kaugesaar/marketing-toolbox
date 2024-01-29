@@ -1,4 +1,14 @@
-type StringInput = string | string[][];
+import { StringInput, parseInput } from ".";
+
+/**
+ * Helper function to create a hash function.
+ */
+const createHashFunction = (
+  algorithm: GoogleAppsScript.Utilities.DigestAlgorithm
+) => {
+  return (input: StringInput) =>
+    parseInput(input, input => getHash(input, algorithm));
+};
 
 /**
  * Returns the MD2 hash of the given string.
@@ -6,9 +16,7 @@ type StringInput = string | string[][];
  * @return {string} The MD2 hash of the string
  * @customfunction
  */
-export const HASH_MD2 = (input: StringInput) => {
-  return parseInput(input, Utilities.DigestAlgorithm.MD2);
-};
+export const HASH_MD2 = createHashFunction(Utilities.DigestAlgorithm.MD2);
 
 /**
  * Returns the MD5 hash of the given string.
@@ -16,9 +24,7 @@ export const HASH_MD2 = (input: StringInput) => {
  * @return {string} The MD5 hash of the string
  * @customfunction
  */
-export const HASH_MD5 = (input: StringInput) => {
-  return parseInput(input, Utilities.DigestAlgorithm.MD5);
-};
+export const HASH_MD5 = createHashFunction(Utilities.DigestAlgorithm.MD5);
 
 /**
  * Returns the SHA1 hash of the given string.
@@ -26,9 +32,7 @@ export const HASH_MD5 = (input: StringInput) => {
  * @return {string} The SHA1 hash of the string
  * @customfunction
  */
-export const HASH_SHA1 = (input: StringInput) => {
-  return parseInput(input, Utilities.DigestAlgorithm.SHA_1);
-};
+export const HASH_SHA1 = createHashFunction(Utilities.DigestAlgorithm.SHA_1);
 
 /**
  * Returns the SHA256 hash of the given string.
@@ -36,9 +40,9 @@ export const HASH_SHA1 = (input: StringInput) => {
  * @return {string} The SHA256 hash of the string
  * @customfunction
  */
-export const HASH_SHA256 = (input: StringInput) => {
-  return parseInput(input, Utilities.DigestAlgorithm.SHA_256);
-};
+export const HASH_SHA256 = createHashFunction(
+  Utilities.DigestAlgorithm.SHA_256
+);
 
 /**
  * Returns the SHA384 hash of the given string.
@@ -46,9 +50,9 @@ export const HASH_SHA256 = (input: StringInput) => {
  * @return {string} The SHA384 hash of the string
  * @customfunction
  */
-export const HASH_SHA384 = (input: StringInput) => {
-  return parseInput(input, Utilities.DigestAlgorithm.SHA_384);
-};
+export const HASH_SHA384 = createHashFunction(
+  Utilities.DigestAlgorithm.SHA_384
+);
 
 /**
  * Returns the SHA512 hash of the given string.
@@ -56,22 +60,9 @@ export const HASH_SHA384 = (input: StringInput) => {
  * @return {string} The SHA512 hash of the string
  * @customfunction
  */
-export const HASH_SHA512 = (input: StringInput) => {
-  return parseInput(input, Utilities.DigestAlgorithm.SHA_512);
-};
-
-/**
- * Parses the input and return the hash. If the input is a range,
- * it will return a 2D array of hashes.
- */
-const parseInput = (
-  input: StringInput,
-  algorithm: GoogleAppsScript.Utilities.DigestAlgorithm
-) => {
-  return Array.isArray(input)
-    ? input.map(row => row.map(cell => getHash(cell, algorithm)))
-    : getHash(input, algorithm);
-};
+export const HASH_SHA512 = createHashFunction(
+  Utilities.DigestAlgorithm.SHA_512
+);
 
 /**
  * Returns the hash of the given string using the specified algorithm.
