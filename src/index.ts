@@ -1,4 +1,3 @@
-export { EXTRACT_UTM, EXTRACT_PARAMS } from "./custom-functions/url";
 export {
   HASH_MD2,
   HASH_MD5,
@@ -7,3 +6,5 @@ export {
   HASH_SHA384,
   HASH_SHA512,
 } from "./custom-functions/crypto";
+export { RAND_UUID, PARSE_TEMPLATE } from "./custom-functions/string";
+export { EXTRACT_UTM, EXTRACT_PARAMS } from "./custom-functions/url";
