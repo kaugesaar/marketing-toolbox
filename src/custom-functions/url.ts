@@ -1,4 +1,4 @@
-import { StringInput, parseInput } from ".";
+import { StringInput, get2dArray, parseInput } from ".";
 
 /**
  * Extracts URL parameters into a key-value object.
@@ -22,7 +22,7 @@ const extractUrlParams = (
  * Extracts the parameters from a URL. By default, it will extract all parameters.
  *
  * @param {A2:A26} url - The URL to extract the UTM parameters from
- * @param {B1:D1} params [OPTIONAL] - The parameters to extract.
+ * @param {B1:D1} url_parameters [OPTIONAL] - The parameters to extract.
  * @param {true} decode_uri [OPTIONAL] - Whether to decode the URI. Defaults to true.
  * I.e. %20 will be converted to a space.
  * @return {string[]} The UTM parameters
@@ -30,16 +30,16 @@ const extractUrlParams = (
  */
 export const EXTRACT_PARAMS = (
   url: StringInput,
-  params?: string[][],
+  url_parameters?: StringInput,
   decode_uri: boolean = true
 ) => {
   const rows: string[][] = [];
   parseInput(url, cell => {
-    const extracedParams = extractUrlParams(cell, decode_uri);
+    const params = extractUrlParams(cell, decode_uri);
     rows.push(
-      params
-        ? [...params[0].map(key => extracedParams[key] || "")]
-        : [...Object.keys(extracedParams).map(key => extracedParams[key])]
+      url_parameters
+        ? [...get2dArray(url_parameters)[0].map(key => params[key] || "")]
+        : [...Object.keys(params).map(key => params[key])]
     );
   });
   return rows;
@@ -60,24 +60,24 @@ export const EXTRACT_PARAMS = (
  */
 export const EXTRACT_UTM = (
   url: StringInput,
-  utms?: string[][],
+  utms?: StringInput,
   decode_uri: boolean = true
 ) => {
   const rows: string[][] = [];
   parseInput(url, cell => {
-    const link = extractUrlParams(cell, decode_uri);
+    const params = extractUrlParams(cell, decode_uri);
     const assureUtm = (key: string) =>
       key.startsWith("utm_") ? key : `utm_${key}`;
 
     rows.push(
       utms
-        ? [...utms[0].map(key => link[assureUtm(key)] || "")]
+        ? [...get2dArray(utms)[0].map(key => params[assureUtm(key)] || "")]
         : [
-            link["utm_source"],
-            link["utm_medium"],
-            link["utm_campaign"],
-            link["utm_content"],
-            link["utm_term"],
+            params["utm_source"],
+            params["utm_medium"],
+            params["utm_campaign"],
+            params["utm_content"],
+            params["utm_term"],
           ]
     );
   });

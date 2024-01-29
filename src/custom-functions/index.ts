@@ -19,3 +19,10 @@ export const parseInput = (
     ? input.map(row => row.map(cell => callback(cell)))
     : callback(input);
 };
+
+/**
+ * Returns a StringInput as a 2D array.
+ */
+export const get2dArray = (input: StringInput) => {
+  return Array.isArray(input) ? input : [input.split(",")];
+};
