@@ -14,14 +14,14 @@ type StringOutput = string[] | string[][] | StringOutput[] | StringOutput[][];
 export const EXTRACT_PARAMS = (
   url: StringInput,
   params?: string[][],
-  decode_uri: boolean = true,
+  decode_uri: boolean = true
 ): StringOutput => {
   if (Array.isArray(url)) {
     const rows: string[] = [];
-    url.forEach((row) =>
-      row.forEach((cell) =>
-        rows.push(...(EXTRACT_PARAMS(cell, params, decode_uri) as string[])),
-      ),
+    url.forEach(row =>
+      row.forEach(cell =>
+        rows.push(...(EXTRACT_PARAMS(cell, params, decode_uri) as string[]))
+      )
     );
     return rows;
   }
@@ -34,14 +34,14 @@ export const EXTRACT_PARAMS = (
 
   const link: { [key: string]: string } = {};
 
-  matches.forEach((param) => {
+  matches.forEach(param => {
     const [key, value] = param.split("=");
     link[key] = decode_uri ? decodeURIComponent(value) : value;
   });
 
   const output = params
-    ? [...params[0].map((key) => link[key] || "")]
-    : [...Object.keys(link).map((key) => link[key])];
+    ? [...params[0].map(key => link[key] || "")]
+    : [...Object.keys(link).map(key => link[key])];
 
   return [output];
 };
@@ -62,14 +62,14 @@ export const EXTRACT_PARAMS = (
 export const EXTRACT_UTM = (
   url: StringInput,
   utms?: string[][],
-  decode_uri: boolean = true,
+  decode_uri: boolean = true
 ): StringOutput => {
   if (Array.isArray(url)) {
     const rows: string[] = [];
-    url.forEach((row) =>
-      row.forEach((cell) =>
-        rows.push(...(EXTRACT_UTM(cell, utms, decode_uri) as string[])),
-      ),
+    url.forEach(row =>
+      row.forEach(cell =>
+        rows.push(...(EXTRACT_UTM(cell, utms, decode_uri) as string[]))
+      )
     );
     return rows;
   }
@@ -82,7 +82,7 @@ export const EXTRACT_UTM = (
 
   const link: { [key: string]: string } = {};
 
-  matches.forEach((utm) => {
+  matches.forEach(utm => {
     const [key, value] = utm.split("=");
     link[key] = decode_uri ? decodeURIComponent(value) : value;
   });
@@ -95,7 +95,7 @@ export const EXTRACT_UTM = (
   };
 
   const output = utms
-    ? [...utms[0].map((key) => link[assureUtm(key)] || "")]
+    ? [...utms[0].map(key => link[assureUtm(key)] || "")]
     : [
         link["utm_source"],
         link["utm_medium"],

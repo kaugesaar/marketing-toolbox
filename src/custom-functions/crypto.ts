@@ -66,10 +66,10 @@ export const HASH_SHA512 = (input: StringInput) => {
  */
 const parseInput = (
   input: StringInput,
-  algorithm: GoogleAppsScript.Utilities.DigestAlgorithm,
+  algorithm: GoogleAppsScript.Utilities.DigestAlgorithm
 ) => {
   return Array.isArray(input)
-    ? input.map((row) => row.map((cell) => getHash(cell, algorithm)))
+    ? input.map(row => row.map(cell => getHash(cell, algorithm)))
     : getHash(input, algorithm);
 };
 
@@ -78,7 +78,7 @@ const parseInput = (
  */
 const getHash = (
   input: string,
-  algorithm: GoogleAppsScript.Utilities.DigestAlgorithm,
+  algorithm: GoogleAppsScript.Utilities.DigestAlgorithm
 ) => {
   const digest = Utilities.computeDigest(algorithm, input);
   let hash = "";
