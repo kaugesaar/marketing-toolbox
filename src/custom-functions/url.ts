@@ -76,9 +76,16 @@ const extractUrlParams = (
   return matches.reduce(
     (acc, param) => {
       const [key, value] = param.split("=");
-      acc[key] = decode_uri ? decodeURIComponent(value) : value;
+      acc[key] = decode_uri ? decodeUriQueryParam(value) : value;
       return acc;
     },
     {} as { [key: string]: string }
   );
+};
+
+/**
+ * Need to replace those plus signs with spaces.
+ */
+const decodeUriQueryParam = (param: string) => {
+  return decodeURIComponent(param.replace(/\+/g, " "));
 };
