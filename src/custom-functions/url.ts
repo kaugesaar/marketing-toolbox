@@ -1,24 +1,6 @@
 import { StringInput, get2dArray, parseInput } from ".";
 
 /**
- * Extracts URL parameters into a key-value object.
- */
-const extractUrlParams = (
-  url: string,
-  decode_uri: boolean
-): { [key: string]: string } => {
-  const matches = url.match(/[^?&]+=[^&]+/g) || [];
-  return matches.reduce(
-    (acc, param) => {
-      const [key, value] = param.split("=");
-      acc[key] = decode_uri ? decodeURIComponent(value) : value;
-      return acc;
-    },
-    {} as { [key: string]: string }
-  );
-};
-
-/**
  * Extracts the parameters from a URL. By default, it will extract all parameters.
  *
  * @param {A2:A26} url - The URL to extract the UTM parameters from
@@ -81,4 +63,22 @@ export const EXTRACT_UTM = (
     );
   });
   return rows;
+};
+
+/**
+ * Extracts URL parameters into a key-value object.
+ */
+const extractUrlParams = (
+  url: string,
+  decode_uri: boolean
+): { [key: string]: string } => {
+  const matches = url.match(/[^?&]+=[^&]+/g) || [];
+  return matches.reduce(
+    (acc, param) => {
+      const [key, value] = param.split("=");
+      acc[key] = decode_uri ? decodeURIComponent(value) : value;
+      return acc;
+    },
+    {} as { [key: string]: string }
+  );
 };

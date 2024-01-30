@@ -3,6 +3,7 @@ import { StringInput, get2dArray, parseInput } from ".";
 /**
  * Returns a random UUID. This identifier is not guaranteed to be unique across all time and space.
  * As such, do not use in situations where guaranteed uniqueness is required.
+ *
  * @param {A1:A26} input_range [OPTIONAL] - Can be any cell or range. If provided,
  * it will return a 2d array of unique UUIDs.
  * @return {string} A random UUID
