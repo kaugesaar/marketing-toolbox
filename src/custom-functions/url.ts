@@ -54,15 +54,37 @@ export const EXTRACT_UTM = (
       utms
         ? [...get2dArray(utms)[0].map(key => params[assureUtm(key)] || "")]
         : [
-            params["utm_source"],
-            params["utm_medium"],
-            params["utm_campaign"],
-            params["utm_content"],
-            params["utm_term"],
+            params["utm_source"] || "",
+            params["utm_medium"] || "",
+            params["utm_campaign"] || "",
+            params["utm_content"] || "",
+            params["utm_term"] || "",
           ]
     );
   });
   return rows;
+};
+
+/**
+ * Decodes a URI. Decodes a Uniform Resource Identifier (URI) component.
+ * @param {A1:A26} text - The text to decode
+ * @return {string} The decoded text
+ * @customfunction
+ */
+export const DECODE_URI = (text: StringInput) => {
+  return parseInput(text, cell => decodeUriQueryParam(cell));
+};
+
+/**
+ * Encodes a URI. Encodes a URI by replacing each instance of certain
+ * characters by one, two, three, or four escape sequences representing
+ * the UTF-8 encoding of the character.
+ * @param {A1:A26} text - The text to encode
+ * @return {string} The encoded text
+ * @customfunction
+ */
+export const ENCODE_URI = (text: StringInput) => {
+  return parseInput(text, cell => encodeURIComponent(cell));
 };
 
 /**

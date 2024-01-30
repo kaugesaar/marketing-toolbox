@@ -1,6 +1,6 @@
 {
-  "name": "calendar-addon",
-  "version": "1.0.0",
+  "name": "marketing-toolbox",
+  "version": "0.0.1",
   "scripts": {
     "clean": "rimraf build dist",
     "lint": "eslint --fix --no-error-on-unmatched-pattern src/ test/",

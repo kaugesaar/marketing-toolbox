@@ -1,4 +1,9 @@
-import { EXTRACT_PARAMS, EXTRACT_UTM } from "../src/custom-functions/url";
+import {
+  DECODE_URL,
+  ENCODE_URL,
+  EXTRACT_PARAMS,
+  EXTRACT_UTM,
+} from "../src/custom-functions/url";
 
 const url =
   "https://example.com/?utm_source=google&utm_medium=cpc&utm_campaign=summer&utm_content=ad1&utm_term=buy+shoes&utm_id=1";
@@ -27,6 +32,17 @@ describe("EXTRACT_PARAMS", () => {
     const expected = [[""]];
     expect(EXTRACT_PARAMS(url, "brand")).toEqual(expected);
   });
+
+  it("should not decode the URI if decode_uri is false", () => {
+    const expected = [["google%20", "cpc%20"]];
+    expect(
+      EXTRACT_PARAMS(
+        "https://t.t?utm_campaign=google%20&utm_medium=cpc%20",
+        [["utm_campaign", "utm_medium"]],
+        false
+      )
+    ).toEqual(expected);
+  });
 });
 
 describe("EXTRACT_UTM", () => {
@@ -35,6 +51,11 @@ describe("EXTRACT_UTM", () => {
   it("should extract default UTM parameters from a URL", () => {
     const expected = [["google", "cpc", "summer", "ad1", "buy shoes"]];
     expect(EXTRACT_UTM(url)).toEqual(expected);
+  });
+
+  it("should return empty string if default value is not found", () => {
+    const expected = [["", "", "test", "", ""]];
+    expect(EXTRACT_UTM("https://t.t?utm_campaign=test")).toEqual(expected);
   });
 
   it("should extract the specified UTM parameters from a URL", () => {
@@ -52,5 +73,60 @@ describe("EXTRACT_UTM", () => {
   it("should return empty strings if the UTM parameter is not found", () => {
     const expected = [[""]];
     expect(EXTRACT_UTM(url, "brand")).toEqual(expected);
+  });
+
+  it("should not decode the URI if decode_uri is false", () => {
+    const expected = [["google%20", "cpc%20"]];
+    expect(
+      EXTRACT_UTM(
+        "https://t.t?utm_campaign=google%20&utm_medium=cpc%20",
+        [["campaign", "medium"]],
+        false
+      )
+    ).toEqual(expected);
+  });
+});
+
+describe("ENCODE_URL", () => {
+  const str = "hej med dig";
+
+  it("should encode a string", () => {
+    const expected = "hej%20med%20dig";
+    expect(ENCODE_URL(str)).toEqual(expected);
+  });
+
+  it("should encode a 2D array", () => {
+    const expected = [
+      ["hej%20med%20dig", "hej%20med%20dig"],
+      ["hej%20med%20dig", "hej%20med%20dig"],
+    ];
+    expect(
+      ENCODE_URL([
+        [str, str],
+        [str, str],
+      ])
+    ).toEqual(expected);
+  });
+});
+
+describe("DECODE_URL", () => {
+  const str = "hej%20med%20dig";
+
+  it("should decode a string", () => {
+    const expected = "hej med dig";
+    expect(DECODE_URL(str)).toEqual(expected);
+  });
+
+  it("should decode a 2D array", () => {
+    const expected = [
+      ["hej med dig", "hej med dig"],
+      ["hej med dig", "hej med dig"],
+    ];
+    expect(
+      DECODE_URL([
+        [str, str],
+        [str, str],
+      ])
+    ).toEqual(expected);
   });
 });
