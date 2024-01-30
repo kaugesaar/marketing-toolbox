@@ -8,8 +8,9 @@ export type StringInput = string | string[][];
 export type StringOutput = string | string[][];
 
 /**
- * Parses the input and return the hash. If the input is a range,
- * it will return a 2D array of hashes.
+ * Helper function to parse a StringInput. If the input is a 2D array, it will
+ * recursively call the callback function on each cell. Otherwise, it will
+ * simply call the callback function on the input.
  */
 export const parseInput = (
   input: StringInput,
