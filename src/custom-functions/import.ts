@@ -9,7 +9,7 @@ type JSONObject = {
  * By default, it will return all fields in a flattened table.
  *
  * @param {A2:A26} url - The URL to import the JSON from
- * @param {products} startFromKey [OPTIONAL] - The field to start from. Typically this
+ * @param {"products"} startFromKey [OPTIONAL] - The field to start from. Typically this
  * would be an array such as data, products, comments. For example, if you want to
  * start from the "products" field, you can pass "products" as this argument.
  * @customfunction
