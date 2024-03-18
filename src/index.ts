@@ -8,3 +8,4 @@ export {
 } from "./custom-functions/crypto";
 export { RAND_UUID, PARSE_TEMPLATE } from "./custom-functions/string";
 export { EXTRACT_UTM, EXTRACT_PARAMS } from "./custom-functions/url";
+export { IMPORTJSON } from "./custom-functions/import";

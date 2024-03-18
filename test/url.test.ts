@@ -1,6 +1,6 @@
 import {
-  DECODE_URL,
-  ENCODE_URL,
+  DECODE_URI,
+  ENCODE_URI,
   EXTRACT_PARAMS,
   EXTRACT_UTM,
 } from "../src/custom-functions/url";
@@ -92,7 +92,7 @@ describe("ENCODE_URL", () => {
 
   it("should encode a string", () => {
     const expected = "hej%20med%20dig";
-    expect(ENCODE_URL(str)).toEqual(expected);
+    expect(ENCODE_URI(str)).toEqual(expected);
   });
 
   it("should encode a 2D array", () => {
@@ -101,7 +101,7 @@ describe("ENCODE_URL", () => {
       ["hej%20med%20dig", "hej%20med%20dig"],
     ];
     expect(
-      ENCODE_URL([
+      ENCODE_URI([
         [str, str],
         [str, str],
       ])
@@ -114,7 +114,7 @@ describe("DECODE_URL", () => {
 
   it("should decode a string", () => {
     const expected = "hej med dig";
-    expect(DECODE_URL(str)).toEqual(expected);
+    expect(DECODE_URI(str)).toEqual(expected);
   });
 
   it("should decode a 2D array", () => {
@@ -123,7 +123,7 @@ describe("DECODE_URL", () => {
       ["hej med dig", "hej med dig"],
     ];
     expect(
-      DECODE_URL([
+      DECODE_URI([
         [str, str],
         [str, str],
       ])
