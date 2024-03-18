@@ -9,18 +9,18 @@ type JSONObject = {
  * By default, it will return all fields in a flattened table.
  *
  * @param {A2:A26} url - The URL to import the JSON from
- * @param {"products"} startFromKey [OPTIONAL] - The field to start from. Typically this
+ * @param {"products"} start_from_key [OPTIONAL] - The field to start from. Typically this
  * would be an array such as data, products, comments. For example, if you want to
  * start from the "products" field, you can pass "products" as this argument.
  * @customfunction
  */
-export const IMPORTJSON = (url: StringInput, startFromKey?: string) => {
+export const IMPORTJSON = (url: StringInput, start_from_key?: string) => {
   return parseInput(url, url => {
     const response = UrlFetchApp.fetch(url);
     const json = response.getContentText();
     const data = JSON.parse(json);
 
-    return jsonTo2DArray(data, startFromKey);
+    return jsonTo2DArray(data, start_from_key);
   });
 };
 
